@@ -1,0 +1,14 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "chanakya-api",
+	"main": "worker/index.js",
+	"compatibility_date": "2024-11-01",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "chanakya-db",
+			"database_id": "03724fd0-6acd-4b9e-b492-95f5c74f52b3",
+			"migrations_dir": "worker/migrations"
+		}
+	]
+}

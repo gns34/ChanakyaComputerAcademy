@@ -1,4 +1,4 @@
-// LoginPage.jsx — Shared login for admin & student with futuristic tech theme
+// LoginPage.jsx — Shared login for admin & student with Cloudflare D1 Auth
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
@@ -6,10 +6,10 @@ import { Input } from '../components/ui/Input'
 import { Button } from '../components/ui/Button'
 import { TechBackground } from '../components/layout/TechBackground'
 import logoImg from '../assets/logo.png'
-import { Eye, EyeOff, AlertCircle, ShieldCheck } from 'lucide-react'
+import { Eye, EyeOff, AlertCircle, ShieldCheck, Database } from 'lucide-react'
 
 export function LoginPage() {
-  const { login } = useAuth()
+  const { login, authServiceOnline } = useAuth()
   const navigate = useNavigate()
 
   const [form, setForm] = useState({ username: '', password: '' })
@@ -25,13 +25,12 @@ export function LoginPage() {
       return
     }
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 400)) // small UX delay
-    const result = login(form.username.trim(), form.password)
+    const result = await login(form.username.trim(), form.password)
     setLoading(false)
     if (result.success) {
       navigate(result.role === 'admin' ? '/admin' : '/student', { replace: true })
     } else {
-      setError(result.error)
+      setError(result.error || 'Authentication failed. Please check your credentials.')
     }
   }
 
@@ -74,11 +73,16 @@ export function LoginPage() {
           <div className="absolute -top-[1px] -left-[1px] w-3 h-3 border-t-2 border-l-2 border-[#1ed760] rounded-tl-[10px]" />
           <div className="absolute -bottom-[1px] -right-[1px] w-3 h-3 border-b-2 border-r-2 border-[#1ed760] rounded-br-[10px]" />
 
-          {/* Security Node Badge */}
-          <div className="flex items-center justify-center mb-5">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1ed760]/10 border border-[#1ed760]/30 text-[10px] font-mono font-semibold text-[#1ed760] uppercase tracking-wider">
+          {/* Security Node & D1 Badge */}
+          <div className="flex items-center justify-between mb-5">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#1ed760]/10 border border-[#1ed760]/30 text-[10px] font-mono font-semibold text-[#1ed760] uppercase tracking-wider">
               <span className="w-1.5 h-1.5 rounded-full bg-[#1ed760] animate-pulse" />
-              <span>SECURE PORTAL // LOGIN</span>
+              <span>SECURE AUTH</span>
+            </div>
+
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-[#b3b3b3]">
+              <Database size={11} className={authServiceOnline ? 'text-[#1ed760]' : 'text-[#ffa42b]'} />
+              <span>D1 // {authServiceOnline === false ? 'LOCAL' : 'READY'}</span>
             </div>
           </div>
 
@@ -88,7 +92,10 @@ export function LoginPage() {
               placeholder="Enter username"
               autoComplete="username"
               value={form.username}
-              onChange={(e) => setForm((p) => ({ ...p, username: e.target.value }))}
+              onChange={(e) => {
+                setForm((p) => ({ ...p, username: e.target.value }))
+                if (error) setError('')
+              }}
             />
 
             <div className="relative">
@@ -98,7 +105,10 @@ export function LoginPage() {
                 placeholder="Enter password"
                 autoComplete="current-password"
                 value={form.password}
-                onChange={(e) => setForm((p) => ({ ...p, password: e.target.value }))}
+                onChange={(e) => {
+                  setForm((p) => ({ ...p, password: e.target.value }))
+                  if (error) setError('')
+                }}
               />
               <button
                 type="button"
@@ -123,9 +133,16 @@ export function LoginPage() {
               variant="primary"
               size="lg"
               disabled={loading}
-              className="w-full mt-2 shadow-[0_0_20px_rgba(30,215,96,0.3)] hover:shadow-[0_0_28px_rgba(30,215,96,0.5)] transition-all"
+              className="w-full mt-2 shadow-[0_0_20px_rgba(30,215,96,0.3)] hover:shadow-[0_0_28px_rgba(30,215,96,0.5)] transition-all font-bold tracking-wider uppercase text-xs"
             >
-              {loading ? 'Authenticating…' : 'Sign In'}
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <span className="w-3.5 h-3.5 border-2 border-[#121212] border-t-transparent rounded-full animate-spin" />
+                  Authenticating…
+                </span>
+              ) : (
+                'Sign In'
+              )}
             </Button>
           </form>
         </div>
@@ -135,7 +152,7 @@ export function LoginPage() {
           <ShieldCheck size={13} className="text-[#1ed760]/60 inline" />
           <span>Admin:</span> <span className="text-[#7c7c7c]">admin / admin123</span>
           <span className="text-[#4d4d4d] mx-1">&bull;</span>
-          <span>Students:</span> <span className="text-[#7c7c7c]">portal access</span>
+          <span>Students:</span> <span className="text-[#7c7c7c]">ravi / ravi123</span>
         </p>
       </div>
     </div>

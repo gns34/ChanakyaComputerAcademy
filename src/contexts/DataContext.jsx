@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
-// DataContext.jsx — manages questions, students, and results via localStorage
-import { createContext, useContext, useState } from 'react'
+// DataContext.jsx — manages questions, students, and results via D1 & localStorage
+import { createContext, useContext, useState, useEffect } from 'react'
+import { api } from '../services/api'
 
 const DataContext = createContext(null)
 
@@ -87,6 +88,36 @@ export function DataProvider({ children }) {
   const [questions, setQuestionsState] = useState(() => load('cca_questions', SEED_QUESTIONS))
   const [results, setResultsState]    = useState(() => load('cca_results', SEED_RESULTS))
 
+  // Sync students from Cloudflare D1 on mount
+  useEffect(() => {
+    let mounted = true
+    api.getStudents().then((res) => {
+      if (mounted && res?.success && Array.isArray(res?.students) && res.students.length > 0) {
+        setStudentsState((prev) => {
+          // Merge remote D1 students with any local state preserving passwords if stored locally
+          const remoteStudents = res.students.map((rs) => {
+            const existing = prev.find((p) => p.id === rs.id || p.username === rs.username)
+            return {
+              id: rs.id,
+              name: rs.name,
+              username: rs.username,
+              role: rs.role || 'student',
+              createdAt: rs.created_at || existing?.createdAt || new Date().toISOString().split('T')[0],
+              password: existing?.password || '',
+            }
+          })
+          save('cca_students', remoteStudents)
+          return remoteStudents
+        })
+      }
+    }).catch(() => {
+      // Keep local state on error
+    })
+    return () => {
+      mounted = false
+    }
+  }, [])
+
   // ── Students ────────────────────────────────────────────────────────────────
   const setStudents = (fn) => {
     setStudentsState((prev) => {
@@ -96,18 +127,46 @@ export function DataProvider({ children }) {
     })
   }
 
-  const addStudent = (data) => {
-    const student = { ...data, id: uid(), createdAt: new Date().toISOString().split('T')[0] }
+  const addStudent = async (data) => {
+    const tempId = uid()
+    const student = { ...data, id: tempId, createdAt: new Date().toISOString().split('T')[0] }
     setStudents((prev) => [...prev, student])
-    return student
+
+    // Sync to Cloudflare D1 with salted password hashing
+    try {
+      const res = await api.createStudent(data)
+      if (res?.success && res.student?.id) {
+        setStudents((prev) =>
+          prev.map((s) => (s.id === tempId ? { ...s, id: res.student.id } : s))
+        )
+        return { success: true, student: res.student }
+      }
+    } catch (err) {
+      console.warn('[DataContext] Error adding student to D1:', err)
+    }
+    return { success: true, student }
   }
 
-  const updateStudent = (id, data) => {
+  const updateStudent = async (id, data) => {
     setStudents((prev) => prev.map((s) => (s.id === id ? { ...s, ...data } : s)))
+
+    // Sync to Cloudflare D1
+    try {
+      await api.updateStudent(id, data)
+    } catch (err) {
+      console.warn('[DataContext] Error updating student in D1:', err)
+    }
   }
 
-  const deleteStudent = (id) => {
+  const deleteStudent = async (id) => {
     setStudents((prev) => prev.filter((s) => s.id !== id))
+
+    // Sync to Cloudflare D1
+    try {
+      await api.deleteStudent(id)
+    } catch (err) {
+      console.warn('[DataContext] Error deleting student from D1:', err)
+    }
   }
 
   // ── Questions ───────────────────────────────────────────────────────────────
@@ -143,20 +202,24 @@ export function DataProvider({ children }) {
   }
 
   const addResult = (data) => {
-    const result = { ...data, id: uid(), date: new Date().toISOString() }
-    setResults((prev) => [...prev, result])
+    const result = { ...data, id: uid(), submittedAt: new Date().toISOString() }
+    setResults((prev) => [result, ...prev])
     return result
   }
-
-  const getStudentResults = (studentId) =>
-    results.filter((r) => r.studentId === studentId)
 
   return (
     <DataContext.Provider
       value={{
-        students, addStudent, updateStudent, deleteStudent,
-        questions, addQuestion, updateQuestion, deleteQuestion,
-        results, addResult, getStudentResults,
+        students,
+        addStudent,
+        updateStudent,
+        deleteStudent,
+        questions,
+        addQuestion,
+        updateQuestion,
+        deleteQuestion,
+        results,
+        addResult,
       }}
     >
       {children}

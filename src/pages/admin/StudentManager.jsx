@@ -79,15 +79,15 @@ export function StudentManager() {
     setEditId(s.id); setForm({ name: s.name, username: s.username, password: '' }); setFormError(''); setModalOpen(true)
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const err = validate(form, !!editId, students, editId)
     if (err) { setFormError(err); return }
     if (editId) {
       const update = { name: form.name }
       if (form.password.trim()) update.password = form.password
-      updateStudent(editId, update)
+      await updateStudent(editId, update)
     } else {
-      addStudent({ name: form.name.trim(), username: form.username.trim(), password: form.password })
+      await addStudent({ name: form.name.trim(), username: form.username.trim(), password: form.password })
     }
     setModalOpen(false)
   }
