@@ -1,0 +1,34 @@
+// Select.jsx — Dark styled select
+import { forwardRef } from 'react'
+
+export const Select = forwardRef(function Select(
+  { label, error, className = '', children, ...props },
+  ref
+) {
+  return (
+    <div className="flex flex-col gap-1 w-full">
+      {label && (
+        <label className="text-xs font-bold uppercase tracking-widest text-[#b3b3b3]">
+          {label}
+        </label>
+      )}
+      <select
+        ref={ref}
+        className={[
+          'w-full bg-[#1f1f1f] text-white',
+          'px-4 py-3 text-sm font-normal rounded-[6px]',
+          'transition-all duration-150 outline-none cursor-pointer',
+          error
+            ? 'border border-[#f3727f]'
+            : 'border border-transparent focus:border-white',
+          className,
+        ].join(' ')}
+        style={{ boxShadow: 'rgb(18,18,18) 0px 1px 0px, rgb(124,124,124) 0px 0px 0px 1px inset' }}
+        {...props}
+      >
+        {children}
+      </select>
+      {error && <p className="text-xs text-[#f3727f] mt-0.5">{error}</p>}
+    </div>
+  )
+})

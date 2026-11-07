@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+@theme {
+  /* ── Brand Colors ── */
+  --color-accent:       #1ed760;
+  --color-accent-dark:  #1db954;
+  --color-accent-hover: #17b34e;
+
+  /* ── Surfaces ── */
+  --color-bg-base:     #121212;
+  --color-bg-surface:  #181818;
+  --color-bg-elevated: #1f1f1f;
+  --color-bg-card:     #252525;
+  --color-bg-alt:      #272727;
+
+  /* ── Text ── */
+  --color-text-primary:   #ffffff;
+  --color-text-secondary: #b3b3b3;
+  --color-text-muted:     #cbcbcb;
+  --color-text-faint:     #7c7c7c;
+
+  /* ── Semantic ── */
+  --color-error:   #f3727f;
+  --color-warning: #ffa42b;
+  --color-info:    #539df5;
+  --color-success: #1ed760;
+
+  /* ── Borders ── */
+  --color-border:       #4d4d4d;
+  --color-border-light: #7c7c7c;
+
+  /* ── Typography ── */
+  --font-sans: "CircularSp", "Helvetica Neue", helvetica, arial, sans-serif;
+
+  /* ── Radius ── */
+  --radius-pill:   9999px;
+  --radius-large:  500px;
+  --radius-card:   8px;
+  --radius-sm:     6px;
+  --radius-badge:  2px;
+
+  /* ── Shadows ── */
+  --shadow-card:   rgba(0,0,0,0.3) 0px 8px 8px;
+  --shadow-modal:  rgba(0,0,0,0.5) 0px 8px 24px;
+  --shadow-inset:  rgb(18,18,18) 0px 1px 0px, rgb(124,124,124) 0px 0px 0px 1px inset;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html, body, #root {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: "CircularSp", "Helvetica Neue", helvetica, arial, sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #121212;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4d4d4d;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #7c7c7c;
+  }
+
+  ::selection {
+    background: rgba(30, 215, 96, 0.3);
+    color: #fff;
+  }
+}
+
+@utility pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+@utility focus-ring {
+  outline: 2px solid #1ed760;
+  outline-offset: 2px;
+}
+
+@utility card-shadow {
+  box-shadow: rgba(0,0,0,0.3) 0px 8px 8px;
+}
+
+@utility modal-shadow {
+  box-shadow: rgba(0,0,0,0.5) 0px 8px 24px;
+}
+
+@utility input-inset {
+  box-shadow: rgb(18,18,18) 0px 1px 0px, rgb(124,124,124) 0px 0px 0px 1px inset;
+}
