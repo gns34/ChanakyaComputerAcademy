@@ -41,7 +41,7 @@ function StudentForm({ value, onChange, isEdit }) {
           type="button"
           tabIndex={-1}
           onClick={() => setShowPass((v) => !v)}
-          className="absolute right-3 bottom-3 text-[#7c7c7c] hover:text-white transition-colors"
+          className="absolute right-3 bottom-3 text-[#7c7c7c] hover:text-white transition-all duration-150 hover:scale-110 active:scale-95 cursor-pointer"
         >
           {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
@@ -139,7 +139,7 @@ export function StudentManager() {
                 {filtered.map((s, i) => {
                   const testCount = results.filter((r) => r.studentId === s.id).length
                   return (
-                    <tr key={s.id} className="border-b border-[#1f1f1f] hover:bg-[#1f1f1f]/50 transition-colors">
+                    <tr key={s.id} className="border-b border-[#1f1f1f] hover:bg-[#1f1f1f]/80 transition-colors duration-150">
                       <td className="px-5 py-4 text-[#4d4d4d] font-bold text-xs">{i + 1}</td>
                       <td className="px-5 py-4">
                         <div className="flex items-center gap-2.5">
@@ -156,13 +156,15 @@ export function StudentManager() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => openEdit(s)}
-                            className="w-7 h-7 rounded-full bg-[#1f1f1f] hover:bg-[#252525] flex items-center justify-center text-[#b3b3b3] hover:text-white transition-all"
+                            className="w-7 h-7 rounded-full bg-[#1f1f1f] hover:bg-[#252525] flex items-center justify-center text-[#b3b3b3] hover:text-white transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+                            aria-label="Edit student"
                           >
                             <Pencil size={12} />
                           </button>
                           <button
                             onClick={() => setDeleteConfirm(s.id)}
-                            className="w-7 h-7 rounded-full bg-[#1f1f1f] hover:bg-[#f3727f]/10 flex items-center justify-center text-[#b3b3b3] hover:text-[#f3727f] transition-all"
+                            className="w-7 h-7 rounded-full bg-[#1f1f1f] hover:bg-[#f3727f]/20 flex items-center justify-center text-[#b3b3b3] hover:text-[#f3727f] transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+                            aria-label="Delete student"
                           >
                             <Trash2 size={12} />
                           </button>

@@ -50,10 +50,10 @@ function QuestionForm({ value, onChange }) {
                 onClick={() => onChange({ ...value, correctIndex: idx })}
                 className={[
                   'w-7 h-7 rounded-full flex-shrink-0 flex items-center justify-center',
-                  'transition-all border text-xs font-bold',
+                  'transition-all duration-200 border text-xs font-bold active:scale-95 cursor-pointer',
                   value.correctIndex === idx
-                    ? 'bg-[#1ed760] border-[#1ed760] text-black'
-                    : 'bg-[#1f1f1f] border-[#4d4d4d] text-[#b3b3b3] hover:border-[#7c7c7c]',
+                    ? 'bg-[#1ed760] border-[#1ed760] text-black scale-105 shadow-[0_0_10px_rgba(30,215,96,0.4)]'
+                    : 'bg-[#1f1f1f] border-[#4d4d4d] text-[#b3b3b3] hover:border-[#7c7c7c] hover:scale-105',
                 ].join(' ')}
               >
                 {value.correctIndex === idx ? <Check size={12} /> : LABELS[idx]}
@@ -175,7 +175,7 @@ export function QuestionManager() {
       ) : (
         <div className="flex flex-col gap-3">
           {filtered.map((q, i) => (
-            <Card key={q.id}>
+            <Card key={q.id} hover className="transition-all duration-200">
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -188,7 +188,7 @@ export function QuestionManager() {
                       <div
                         key={idx}
                         className={[
-                          'flex items-center gap-2 px-2.5 py-1.5 rounded-[6px] text-xs',
+                          'flex items-center gap-2 px-2.5 py-1.5 rounded-[6px] text-xs transition-colors duration-150',
                           idx === q.correctIndex
                             ? 'bg-[#1ed760]/10 text-[#1ed760] border border-[#1ed760]/30'
                             : 'bg-[#1f1f1f] text-[#b3b3b3]',
@@ -208,13 +208,15 @@ export function QuestionManager() {
                 <div className="flex gap-2 flex-shrink-0">
                   <button
                     onClick={() => openEdit(q)}
-                    className="w-8 h-8 rounded-full bg-[#1f1f1f] hover:bg-[#252525] flex items-center justify-center text-[#b3b3b3] hover:text-white transition-all"
+                    className="w-8 h-8 rounded-full bg-[#1f1f1f] hover:bg-[#252525] flex items-center justify-center text-[#b3b3b3] hover:text-white transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+                    aria-label="Edit question"
                   >
                     <Pencil size={13} />
                   </button>
                   <button
                     onClick={() => setDeleteConfirm(q.id)}
-                    className="w-8 h-8 rounded-full bg-[#1f1f1f] hover:bg-[#f3727f]/10 flex items-center justify-center text-[#b3b3b3] hover:text-[#f3727f] transition-all"
+                    className="w-8 h-8 rounded-full bg-[#1f1f1f] hover:bg-[#f3727f]/20 flex items-center justify-center text-[#b3b3b3] hover:text-[#f3727f] transition-all duration-200 hover:scale-110 active:scale-95 cursor-pointer"
+                    aria-label="Delete question"
                   >
                     <Trash2 size={13} />
                   </button>

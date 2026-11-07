@@ -1,5 +1,5 @@
 // TakeTest.jsx — Randomized MCQ test for students
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { useData } from '../../contexts/DataContext'
@@ -26,17 +26,11 @@ export function TakeTest() {
   const { questions, addResult } = useData()
   const navigate = useNavigate()
 
-  const [testQuestions, setTestQuestions] = useState([])
+  const [testQuestions] = useState(() => shuffle(questions).slice(0, MAX_QUESTIONS))
   const [currentIdx, setCurrentIdx] = useState(0)
   const [answers, setAnswers] = useState({}) // questionId → chosen index
   const [submitOpen, setSubmitOpen] = useState(false)
   const [started, setStarted] = useState(false)
-
-  // Shuffle on mount
-  useEffect(() => {
-    const shuffled = shuffle(questions).slice(0, MAX_QUESTIONS)
-    setTestQuestions(shuffled)
-  }, [questions])
 
   const currentQ = testQuestions[currentIdx]
   const selectedForCurrent = answers[currentQ?.id] ?? null
@@ -97,7 +91,7 @@ export function TakeTest() {
     return (
       <Layout>
         <div className="max-w-lg mx-auto">
-          <div className="bg-[#181818] rounded-[8px] p-8 text-center" style={{ boxShadow: 'rgba(0,0,0,0.5) 0px 8px 24px' }}>
+          <div className="bg-[#181818]/85 backdrop-blur-md rounded-[8px] p-8 text-center border border-white/[0.06]" style={{ boxShadow: 'rgba(0,0,0,0.5) 0px 8px 24px' }}>
             <div className="w-16 h-16 rounded-full bg-[#1ed760]/10 border border-[#1ed760]/30 flex items-center justify-center mx-auto mb-5">
               <BookOpen size={28} className="text-[#1ed760]" />
             </div>
@@ -135,7 +129,11 @@ export function TakeTest() {
         <ProgressBar current={currentIdx + 1} total={testQuestions.length} className="mb-6" />
 
         {/* Question */}
-        <div className="bg-[#181818] rounded-[8px] p-6 mb-5" style={{ boxShadow: 'rgba(0,0,0,0.3) 0px 8px 8px' }}>
+        <div
+          key={currentQ?.id}
+          className="bg-[#181818]/85 backdrop-blur-md rounded-[8px] p-6 mb-5 border border-white/[0.06] animate-fade-up"
+          style={{ boxShadow: 'rgba(0,0,0,0.3) 0px 8px 8px' }}
+        >
           <QuestionCard
             question={currentQ}
             selectedIndex={selectedForCurrent}
@@ -159,12 +157,12 @@ export function TakeTest() {
                   key={i}
                   onClick={() => setCurrentIdx(i)}
                   className={[
-                    'w-7 h-7 rounded-full text-xs font-bold transition-all',
+                    'w-7 h-7 rounded-full text-xs font-bold transition-all duration-200 cursor-pointer active:scale-95',
                     isCurrent
-                      ? 'bg-[#1ed760] text-black'
+                      ? 'bg-[#1ed760] text-black shadow-[0_0_12px_rgba(30,215,96,0.5)] scale-110'
                       : isAnswered
-                        ? 'bg-[#1ed760]/20 text-[#1ed760] border border-[#1ed760]/40'
-                        : 'bg-[#1f1f1f] text-[#b3b3b3] border border-[#4d4d4d]',
+                        ? 'bg-[#1ed760]/20 text-[#1ed760] border border-[#1ed760]/40 hover:bg-[#1ed760]/30 hover:scale-105'
+                        : 'bg-[#1f1f1f] text-[#b3b3b3] border border-[#4d4d4d] hover:border-[#7c7c7c] hover:scale-105',
                   ].join(' ')}
                 >
                   {i + 1}

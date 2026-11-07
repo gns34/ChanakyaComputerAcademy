@@ -1,5 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 // DataContext.jsx — manages questions, students, and results via localStorage
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 const DataContext = createContext(null)
 

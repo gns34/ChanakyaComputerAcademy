@@ -68,16 +68,16 @@ export function AdminDashboard() {
           <div
             key={label}
             onClick={() => navigate(link)}
-            className="bg-[#181818] rounded-[8px] p-5 hover:bg-[#1f1f1f] transition-colors cursor-pointer"
+            className="bg-[#181818]/80 backdrop-blur-md rounded-[8px] p-5 border border-white/[0.06] hover:border-[#1ed760]/35 hover:bg-[#1f1f1f]/90 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.45)] transition-all duration-250 ease-out cursor-pointer group"
             style={{ boxShadow: 'rgba(0,0,0,0.3) 0px 8px 8px' }}
           >
             <div
-              className="w-9 h-9 rounded-full flex items-center justify-center mb-3"
+              className="w-9 h-9 rounded-full flex items-center justify-center mb-3 transition-transform duration-200 group-hover:scale-110"
               style={{ background: `${color}20`, border: `1px solid ${color}40` }}
             >
               <Icon size={16} style={{ color }} />
             </div>
-            <p className="text-2xl font-bold text-white">{value}</p>
+            <p className="text-2xl font-bold text-white tracking-tight">{value}</p>
             <p className="text-xs text-[#b3b3b3] mt-0.5 uppercase tracking-widest font-semibold">
               {label}
             </p>
@@ -111,7 +111,7 @@ export function AdminDashboard() {
                   const pct = r.total > 0 ? Math.round((r.score / r.total) * 100) : 0
                   const color = pct >= 70 ? '#1ed760' : pct >= 40 ? '#ffa42b' : '#f3727f'
                   return (
-                    <tr key={r.id} className="border-b border-[#1f1f1f] hover:bg-[#1f1f1f] transition-colors">
+                    <tr key={r.id} className="border-b border-[#1f1f1f] hover:bg-[#1f1f1f]/80 transition-colors duration-150">
                       <td className="py-3 pr-4 font-normal text-white">
                         {student?.name ?? 'Unknown'}
                       </td>

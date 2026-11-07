@@ -57,7 +57,7 @@
   }
 
   html, body, #root {
-    background-color: #121212;
+    background-color: #07090e;
     color: #ffffff;
     font-family: "CircularSp", "Helvetica Neue", helvetica, arial, sans-serif;
     min-height: 100vh;
@@ -71,7 +71,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #121212;
+    background: #07090e;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -123,4 +123,145 @@
 
 @utility input-inset {
   box-shadow: rgb(18,18,18) 0px 1px 0px, rgb(124,124,124) 0px 0px 0px 1px inset;
+}
+
+/* ── Technology Animations & Gradients ── */
+@keyframes tech-pulse {
+  0%, 100% {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.38;
+    transform: scale(1.08) translate3d(10px, -12px, 0);
+  }
+}
+
+@keyframes tech-drift {
+  0%, 100% {
+    opacity: 0.16;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0.28;
+    transform: translate3d(-24px, 16px, 0) scale(1.06);
+  }
+}
+
+/* ── Smooth UI Interaction Keyframes ── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translate3d(16px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@utility animate-tech-pulse {
+  animation: tech-pulse 8s ease-in-out infinite;
+}
+
+@utility animate-tech-drift {
+  animation: tech-drift 12s ease-in-out infinite;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-fade-up {
+  animation: fade-up 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-scale-in {
+  animation: scale-in 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-slide-in-right {
+  animation: slide-in-right 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@utility animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite linear;
+}
+
+@utility tech-border-glow {
+  box-shadow: 0 0 15px -3px rgba(30, 215, 96, 0.25);
+}
+
+@utility tech-glass {
+  background-color: rgba(24, 24, 24, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@utility smooth-transition {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-tech-pulse,
+  .animate-tech-drift,
+  .animate-fade-in,
+  .animate-fade-up,
+  .animate-scale-in,
+  .animate-slide-in-right,
+  .animate-shimmer {
+    animation: none !important;
+    transition: none !important;
+  }
 }

@@ -25,7 +25,6 @@ export function StudentDashboard() {
   const bestScore   = totalTests > 0
     ? Math.max(...myResults.map((r) => (r.total > 0 ? Math.round((r.score / r.total) * 100) : 0)))
     : 0
-  const latestResult = myResults[0]
 
   const stats = [
     { label: 'Tests Taken', value: totalTests, icon: BookOpen, color: '#539df5' },
@@ -51,16 +50,16 @@ export function StudentDashboard() {
         {stats.map(({ label, value, icon: Icon, color }) => (
           <div
             key={label}
-            className="bg-[#181818] rounded-[8px] p-5"
+            className="bg-[#181818]/80 backdrop-blur-md rounded-[8px] p-5 border border-white/[0.06] hover:border-[#1ed760]/30 hover:-translate-y-1 hover:shadow-[0_12px_24px_rgba(0,0,0,0.45)] transition-all duration-250 ease-out cursor-default group"
             style={{ boxShadow: 'rgba(0,0,0,0.3) 0px 8px 8px' }}
           >
             <div
-              className="w-9 h-9 rounded-full flex items-center justify-center mb-3"
+              className="w-9 h-9 rounded-full flex items-center justify-center mb-3 transition-transform duration-200 group-hover:scale-110"
               style={{ background: `${color}20`, border: `1px solid ${color}40` }}
             >
               <Icon size={16} style={{ color }} />
             </div>
-            <p className="text-2xl font-bold text-white">{value}</p>
+            <p className="text-2xl font-bold text-white tracking-tight">{value}</p>
             <p className="text-xs text-[#b3b3b3] mt-0.5 uppercase tracking-widest font-semibold">{label}</p>
           </div>
         ))}
@@ -109,18 +108,18 @@ export function StudentDashboard() {
                   <div
                     key={r.id}
                     onClick={() => navigate(`/student/results/${r.id}`)}
-                    className="flex items-center justify-between gap-4 px-5 py-3.5 border-b border-[#1f1f1f] hover:bg-[#1f1f1f] cursor-pointer transition-colors last:border-0"
+                    className="flex items-center justify-between gap-4 px-5 py-3.5 border-b border-[#1f1f1f] hover:bg-[#1f1f1f]/80 hover:translate-x-0.5 cursor-pointer transition-all duration-200 last:border-0 group"
                   >
                     <div>
-                      <p className="text-sm font-bold text-white">
+                      <p className="text-sm font-bold text-white group-hover:text-[#1ed760] transition-colors">
                         {new Date(r.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                       </p>
                       <p className="text-xs text-[#b3b3b3]">{r.total} questions</p>
                     </div>
                     <div className="flex items-center gap-3">
                       <div className="hidden sm:flex items-center gap-1.5">
-                        <div className="w-16 h-1 bg-[#4d4d4d] rounded-full overflow-hidden">
-                          <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+                        <div className="w-16 h-1.5 bg-[#4d4d4d] rounded-full overflow-hidden">
+                          <div className="h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%`, background: color }} />
                         </div>
                       </div>
                       <ScoreBadge score={r.score} total={r.total} />

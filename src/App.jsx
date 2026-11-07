@@ -16,7 +16,7 @@ import { StudentResults }  from './pages/student/StudentResults'
 // ── Guards ─────────────────────────────────────────────────────────────────────
 function RequireAuth({ children, role }) {
   const { currentUser, loading } = useAuth()
-  if (loading) return <div className="min-h-screen bg-[#121212]" />
+  if (loading) return <div className="min-h-screen bg-[#07090e]" />
   if (!currentUser) return <Navigate to="/login" replace />
   if (role && currentUser.role !== role) {
     return <Navigate to={currentUser.role === 'admin' ? '/admin' : '/student'} replace />
@@ -26,7 +26,7 @@ function RequireAuth({ children, role }) {
 
 function RedirectIfLoggedIn({ children }) {
   const { currentUser, loading } = useAuth()
-  if (loading) return <div className="min-h-screen bg-[#121212]" />
+  if (loading) return <div className="min-h-screen bg-[#07090e]" />
   if (currentUser) {
     return <Navigate to={currentUser.role === 'admin' ? '/admin' : '/student'} replace />
   }

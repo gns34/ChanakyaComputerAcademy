@@ -51,19 +51,23 @@ export function QuestionCard({ question, selectedIndex, onSelect, showAnswer = f
               onClick={() => !showAnswer && onSelect?.(idx)}
               className={[
                 'flex items-center gap-3 px-4 py-3 rounded-[8px]',
-                'border transition-all duration-150 text-left w-full',
-                showAnswer ? 'cursor-default' : 'cursor-pointer',
+                'border transition-all duration-200 ease-out text-left w-full select-none',
+                showAnswer
+                  ? 'cursor-default'
+                  : 'cursor-pointer hover:border-[#7c7c7c] hover:translate-x-0.5 active:scale-[0.99]',
+                selectedIndex === idx && !showAnswer ? 'shadow-[0_0_15px_rgba(30,215,96,0.15)] translate-x-0.5' : '',
                 borderColor, bgColor,
               ].join(' ')}
             >
               <span className={[
                 'w-7 h-7 rounded-full flex items-center justify-center',
-                'text-xs font-bold flex-shrink-0 transition-all',
+                'text-xs font-bold flex-shrink-0 transition-transform duration-200',
+                selectedIndex === idx ? 'scale-105' : 'scale-100',
                 labelBg,
               ].join(' ')}>
                 {LABELS[idx]}
               </span>
-              <span className={['text-sm font-normal', textColor].join(' ')}>{opt}</span>
+              <span className={['text-sm font-medium transition-colors duration-150', textColor].join(' ')}>{opt}</span>
             </button>
           )
         })}

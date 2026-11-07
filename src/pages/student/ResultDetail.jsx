@@ -58,18 +58,18 @@ export function ResultDetail() {
         {/* Back */}
         <button
           onClick={() => navigate(-1)}
-          className="flex items-center gap-2 text-sm text-[#b3b3b3] hover:text-white transition-colors mb-6"
+          className="flex items-center gap-2 text-sm text-[#b3b3b3] hover:text-white transition-all duration-200 hover:-translate-x-1 mb-6 cursor-pointer"
         >
           <ArrowLeft size={14} /> Back
         </button>
 
         {/* Score card */}
         <div
-          className="bg-[#181818] rounded-[8px] p-6 mb-6 text-center"
+          className="bg-[#181818]/85 backdrop-blur-md rounded-[8px] p-6 mb-6 text-center border border-white/[0.06] animate-scale-in"
           style={{ boxShadow: 'rgba(0,0,0,0.5) 0px 8px 24px' }}
         >
           <div
-            className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border-2"
+            className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 border-2 transition-transform duration-300 hover:scale-105"
             style={{ background: `${color}15`, borderColor: `${color}50` }}
           >
             <Trophy size={32} style={{ color }} />
@@ -126,7 +126,7 @@ export function ResultDetail() {
             return (
               <div
                 key={ans.questionId}
-                className="bg-[#181818] rounded-[8px] p-5"
+                className="bg-[#181818]/85 backdrop-blur-md rounded-[8px] p-5 border border-white/[0.06]"
                 style={{ boxShadow: 'rgba(0,0,0,0.3) 0px 8px 8px' }}
               >
                 {/* Status indicator */}

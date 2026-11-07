@@ -5,7 +5,7 @@ import { Layout } from '../../components/layout/Layout'
 import { Card } from '../../components/ui/Card'
 import { EmptyState } from '../../components/ui/EmptyState'
 import { ScoreBadge } from '../../components/ui/Badge'
-import { BarChart2, ChevronDown, ChevronUp, Check, X } from 'lucide-react'
+import { BarChart2, ChevronDown, Check, X } from 'lucide-react'
 
 const LABELS = ['A', 'B', 'C', 'D']
 
@@ -14,29 +14,34 @@ function ResultRow({ result, questions, expanded, onToggle }) {
   const color = pct >= 70 ? '#1ed760' : pct >= 40 ? '#ffa42b' : '#f3727f'
 
   return (
-    <div className="border-b border-[#1f1f1f] last:border-0">
+    <div className="border-b border-[#1f1f1f] last:border-0 transition-colors">
       <button
         onClick={onToggle}
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 hover:bg-[#1f1f1f]/50 transition-colors text-left"
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 hover:bg-[#1f1f1f]/70 transition-all duration-200 text-left cursor-pointer group"
       >
         <div className="flex items-center gap-4 flex-1 min-w-0">
           <div>
-            <p className="text-sm font-bold text-white">{new Date(result.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
+            <p className="text-sm font-bold text-white group-hover:text-[#1ed760] transition-colors">{new Date(result.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</p>
             <p className="text-xs text-[#b3b3b3]">{new Date(result.date).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</p>
           </div>
           <ScoreBadge score={result.score} total={result.total} />
           <div className="hidden sm:flex items-center gap-1.5">
-            <div className="w-20 h-1 bg-[#4d4d4d] rounded-full overflow-hidden">
-              <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: color }} />
+            <div className="w-20 h-1.5 bg-[#4d4d4d] rounded-full overflow-hidden">
+              <div className="h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%`, background: color }} />
             </div>
             <span className="text-xs font-bold" style={{ color }}>{pct}%</span>
           </div>
         </div>
-        {expanded ? <ChevronUp size={16} className="text-[#b3b3b3] flex-shrink-0" /> : <ChevronDown size={16} className="text-[#b3b3b3] flex-shrink-0" />}
+        <ChevronDown
+          size={16}
+          className={`transition-transform duration-300 ease-out flex-shrink-0 ${
+            expanded ? 'rotate-180 text-[#1ed760]' : 'rotate-0 text-[#b3b3b3] group-hover:text-white'
+          }`}
+        />
       </button>
 
       {expanded && (
-        <div className="px-5 pb-5">
+        <div className="px-5 pb-5 animate-fade-up">
           <div className="flex flex-col gap-3">
             {result.answers.map((ans, i) => {
               const q = questions.find((qq) => qq.id === ans.questionId)

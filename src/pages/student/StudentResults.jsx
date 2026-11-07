@@ -39,12 +39,12 @@ export function StudentResults() {
               <div
                 key={r.id}
                 onClick={() => navigate(`/student/results/${r.id}`)}
-                className="flex items-center justify-between gap-4 px-5 py-4 border-b border-[#1f1f1f] hover:bg-[#1f1f1f] cursor-pointer transition-colors last:border-0"
+                className="flex items-center justify-between gap-4 px-5 py-4 border-b border-[#1f1f1f] hover:bg-[#1f1f1f]/80 hover:translate-x-0.5 cursor-pointer transition-all duration-200 last:border-0 group"
               >
                 <div className="flex items-center gap-4">
                   <span className="text-xs font-bold text-[#4d4d4d] w-5 text-right">{i + 1}</span>
                   <div>
-                    <p className="text-sm font-bold text-white">
+                    <p className="text-sm font-bold text-white group-hover:text-[#1ed760] transition-colors">
                       {new Date(r.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </p>
                     <p className="text-xs text-[#b3b3b3]">
@@ -54,8 +54,8 @@ export function StudentResults() {
                 </div>
                 <div className="flex items-center gap-4">
                   <div className="hidden sm:flex items-center gap-1.5">
-                    <div className="w-20 h-1 bg-[#4d4d4d] rounded-full overflow-hidden">
-                      <div className="h-full rounded-full" style={{ width: `${pct}%`, background: color }} />
+                    <div className="w-20 h-1.5 bg-[#4d4d4d] rounded-full overflow-hidden">
+                      <div className="h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${pct}%`, background: color }} />
                     </div>
                     <span className="text-xs font-bold" style={{ color }}>{pct}%</span>
                   </div>

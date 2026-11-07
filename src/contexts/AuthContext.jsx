@@ -1,26 +1,22 @@
+/* eslint-disable react-refresh/only-export-components */
 // AuthContext.jsx — manages login state and current user
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useData } from './DataContext'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const { students } = useData()
-  const [currentUser, setCurrentUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  // Restore session from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem('cca_session')
-    if (saved) {
-      try {
-        setCurrentUser(JSON.parse(saved))
-      } catch {
-        localStorage.removeItem('cca_session')
-      }
+  const [currentUser, setCurrentUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('cca_session')
+      return saved ? JSON.parse(saved) : null
+    } catch {
+      localStorage.removeItem('cca_session')
+      return null
     }
-    setLoading(false)
-  }, [])
+  })
+  const loading = false
 
   const login = (username, password) => {
     // Admin check
